@@ -1,0 +1,25 @@
+.card {
+padding: 10px;
+margin: 5px;
+border-radius: 5px;
+text-align: center;
+transition: background-color 0.3s, color 0.3s;
+}
+
+.card.selected {
+background-color: red;
+color: white;
+cursor: not-allowed;
+}
+
+.card.selecting {
+background-color: yellow;
+color: black;
+cursor: pointer;
+}
+
+.card.not-selected {
+background-color: rgb(12, 211, 12);
+color: black;
+cursor: pointer;
+}
