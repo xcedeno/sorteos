@@ -48,7 +48,7 @@ form {
     border: 1px solid rgba(255, 255, 255, 0.3);
     width: 90%;
     max-width: 400px;
-    margin-top: 80px; /* Add margin to push the form down */
+    margin-top: 200px; /* Add margin to push the form down */
 }
 
 @media (max-width: 768px) {
