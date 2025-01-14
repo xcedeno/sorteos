@@ -67,10 +67,12 @@
 }
 
 .modal-content {
-    background: white;
+    background: rgba(255, 255, 255, 0.363);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 .modal-content button {
