@@ -1,0 +1,66 @@
+body {
+    background: linear-gradient(135deg, #078d8d, #c3cfe2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    margin: 0;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    background-color: #ffffff2a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.admin-button {
+    background-color: #1c35a500;
+    color: white;
+    border: none;
+    padding: 10px 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.admin-button:hover {
+    color: #0e8a6a;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 90%;
+    max-width: 400px;
+    margin-top: 80px; /* Add margin to push the form down */
+}
+
+@media (max-width: 768px) {
+    form {
+        width: 80%;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    form {
+        width: 95%;
+        padding: 1rem;
+    }
+}
