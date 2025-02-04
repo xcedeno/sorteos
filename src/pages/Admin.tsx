@@ -1,42 +1,97 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../services/supabaseClient';
 import AdminCard from '../components/AdminCard';
+import Ticket from '../components/Ticket/Ticket';
 import './admin.css';
+import { toPng } from 'html-to-image';
 
 const Admin: React.FC = () => {
-const [purchases, setPurchases] = useState<{ number: number, name: string }[]>([]);
+const [purchases, setPurchases] = useState<{ number: number, name: string, isPaid: boolean }[]>([]);
+const [paidUsers, setPaidUsers] = useState<{ name: string, numbers: number[] }[]>([]);
+const ticketRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
 useEffect(() => {
 const fetchPurchases = async () => {
-    const { data, error } = await supabase.from('users').select('name, selectedNumbers');
+    const { data, error } = await supabase.from('users').select('name, selectedNumbers, isPaid');
     if (error) {
     console.error(error);
     return;
     }
     if (data) {
     const allPurchases = data.flatMap((entry) =>
-        entry.selectedNumbers.map((number: number) => ({ number, name: entry.name }))
+        entry.selectedNumbers.map((number: number) => ({ number, name: entry.name, isPaid: entry.isPaid }))
     );
     setPurchases(allPurchases);
+
+    const paidUsersData = data
+        .filter((entry) => entry.isPaid)
+        .map((entry) => ({ name: entry.name, numbers: entry.selectedNumbers }));
+    setPaidUsers(paidUsersData);
     }
 };
 fetchPurchases();
 }, []);
 
+const handleConfirmPayment = async (name: string) => {
+const updatedPurchases = purchases.map(purchase =>
+    purchase.name === name ? { ...purchase, isPaid: true } : purchase
+);
+setPurchases(updatedPurchases);
+
+// Actualiza el estado de pago en la base de datos
+const { error } = await supabase
+    .from('users')
+    .update({ isPaid: true })
+    .eq('name', name);
+
+if (error) {
+    console.error('Error al actualizar el estado de pago:', error);
+} else {
+    const user = purchases.find(purchase => purchase.name === name);
+    if (user) {
+    setPaidUsers([...paidUsers, { name: user.name, numbers: purchases.filter(p => p.name === user.name).map(p => p.number) }]);
+    }
+}
+};
+
+const handleDownloadTicket = async (name: string) => {
+const ticketRef = ticketRefs.current.get(name);
+if (ticketRef) {
+    const dataUrl = await toPng(ticketRef);
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = `ticket-${name}.png`;
+    link.click();
+}
+};
+
 const allNumbers = Array.from({ length: 100 }, (_, i) => i + 1);
-const allPurchasesMap = new Map(purchases.map(purchase => [purchase.number, purchase.name]));
+const allPurchasesMap = new Map(purchases.map(purchase => [purchase.number, purchase]));
 
 return (
 <div>
     <h1>Panel de Administrador</h1>
     <div className="grid-container">
-    {allNumbers.map((number) => (
+    {allNumbers.map((number) => {
+        const purchase = allPurchasesMap.get(number);
+        return (
         <AdminCard
-        key={number}
-        number={number}
-        name={allPurchasesMap.get(number) || 'Disponible'}
-        isSelected={allPurchasesMap.has(number)}
+            key={number}
+            number={number}
+            name={purchase ? purchase.name : 'Disponible'}
+            isSelected={!!purchase}
+            isPaid={purchase ? purchase.isPaid : false}
+            onConfirmPayment={() => purchase && handleConfirmPayment(purchase.name)}
+            onDownloadTicket={() => purchase && handleDownloadTicket(purchase.name)}
         />
+        );
+    })}
+    </div>
+    <div className="tickets-container">
+    {paidUsers.map((user, index) => (
+        <div key={index} ref={el => el && ticketRefs.current.set(user.name, el)}>
+        <Ticket name={user.name} numbers={user.numbers} />
+        </div>
     ))}
     </div>
 </div>

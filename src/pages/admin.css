@@ -1,3 +1,56 @@
+.card {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+border: 1px solid #ccc;
+border-radius: 5px;
+padding: 10px;
+text-align: center;
+}
+.tickets-container {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+.not-selected {
+background-color: #fff;
+}
+
+.selected {
+background-color: red;
+color: white;
+}
+
+.not-paid {
+background-color: yellow;
+color: black;
+}
+
+.paid {
+background-color: blue;
+color: white;
+}
+
+.confirm-dialog {
+background-color: white;
+border: 1px solid #ccc;
+border-radius: 5px;
+padding: 10px;
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+z-index: 1000;
+}
+
+.confirm-dialog button {
+margin: 5px;
+}
+
+
 .grid-container {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
@@ -25,12 +78,16 @@
 
 @media (max-width: 576px) {
     .grid-container {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .card {
+        padding: 5px;
+        font-size: 0.8rem;
     }
 }
 
 @media (max-width: 400px) {
     .grid-container {
-        grid-template-columns: 2, 1fr;
+        grid-template-columns: 4, 1fr;
     }
 }
