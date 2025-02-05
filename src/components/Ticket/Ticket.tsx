@@ -60,7 +60,7 @@ return (
 <div className="ticket" ref={ticketRef}>
     <h2>Sorteo 001</h2>
     <p><strong>Gánate un combo playero</strong></p>
-    <img src="/public/images/sorteo.png" alt="Imagen del Sorteo" className="ticket-image" />
+    <img src="/public/assets/images/sorteo.png" alt="Imagen del Sorteo" className="ticket-image" />
     <p><strong>Nombre:</strong> {name}</p>
     <p><strong>Tus Números:</strong></p>
     <div className="numbers-container">
