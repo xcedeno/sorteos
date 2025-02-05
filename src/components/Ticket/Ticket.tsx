@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { toPng } from 'html-to-image';
 import { supabase } from '../../services/supabaseClient';
-import './ticket.css';
+import './Ticket.css';
 
 interface TicketProps {
 name: string;
