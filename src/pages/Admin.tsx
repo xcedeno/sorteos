@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../services/supabaseClient';
 import AdminCard from '../components/AdminCard';
 import Ticket from '../components/Ticket/Ticket';
+import Modal from '../components/Modals/Modal';
 import './admin.css';
 import { toPng } from 'html-to-image';
 
 const Admin: React.FC = () => {
 const [purchases, setPurchases] = useState<{ number: number, name: string, isPaid: boolean }[]>([]);
 const [paidUsers, setPaidUsers] = useState<{ name: string, numbers: number[] }[]>([]);
+const [selectedUser, setSelectedUser] = useState<{ name: string, numbers: number[] } | null>(null);
 const ticketRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
 useEffect(() => {
@@ -65,12 +67,22 @@ if (ticketRef) {
 }
 };
 
+const handleShowTicket = (name: string) => {
+const user = paidUsers.find(user => user.name === name);
+if (user) {
+    setSelectedUser(user);
+}
+};
+
+const handleCloseModal = () => {
+setSelectedUser(null);
+};
+
 const allNumbers = Array.from({ length: 100 }, (_, i) => i + 1);
 const allPurchasesMap = new Map(purchases.map(purchase => [purchase.number, purchase]));
 
 return (
-<div>
-    <h1>Panel de Administrador</h1>
+<div className="admin-container">
     <div className="grid-container">
     {allNumbers.map((number) => {
         const purchase = allPurchasesMap.get(number);
@@ -83,17 +95,18 @@ return (
             isPaid={purchase ? purchase.isPaid : false}
             onConfirmPayment={() => purchase && handleConfirmPayment(purchase.name)}
             onDownloadTicket={() => purchase && handleDownloadTicket(purchase.name)}
+            onShowTicket={() => purchase && handleShowTicket(purchase.name)}
         />
         );
     })}
     </div>
-    <div className="tickets-container">
-    {paidUsers.map((user, index) => (
-        <div key={index} ref={el => el && ticketRefs.current.set(user.name, el)}>
-        <Ticket name={user.name} numbers={user.numbers} />
+    <Modal isOpen={!!selectedUser} onClose={handleCloseModal}>
+    {selectedUser && (
+        <div ref={el => el && ticketRefs.current.set(selectedUser.name, el)}>
+        <Ticket name={selectedUser.name} numbers={selectedUser.numbers} />
         </div>
-    ))}
-    </div>
+    )}
+    </Modal>
 </div>
 );
 };

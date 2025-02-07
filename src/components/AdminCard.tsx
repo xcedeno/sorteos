@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './card.css';
+import './AdminCard.css';
 
 interface AdminCardProps {
 number: number;
@@ -8,9 +8,10 @@ isSelected: boolean;
 isPaid: boolean;
 onConfirmPayment: () => void;
 onDownloadTicket: () => void;
+onShowTicket: () => void;
 }
 
-const AdminCard: React.FC<AdminCardProps> = ({ number, name, isSelected, isPaid, onConfirmPayment, onDownloadTicket }) => {
+const AdminCard: React.FC<AdminCardProps> = ({ number, name, isSelected, isPaid, onConfirmPayment, onDownloadTicket, onShowTicket }) => {
 const [showConfirm, setShowConfirm] = useState(false);
 
 const handleConfirmClick = () => {
@@ -27,7 +28,7 @@ setShowConfirm(false);
 };
 
 return (
-<div className={`card ${isSelected ? (isPaid ? 'paid' : 'not-paid') : 'not-selected'}`}>
+<div className={`card ${isSelected ? (isPaid ? 'paid' : 'not-paid') : 'not-selected'}`} onClick={isPaid ? onShowTicket : undefined}>
     <p>{number}</p>
     <p>{name}</p>
     {isSelected && !isPaid && (
@@ -35,14 +36,14 @@ return (
         <button onClick={handleConfirmClick}>Confirmar Pago</button>
         {showConfirm && (
         <div className="confirm-dialog">
-            <p>¿Desea confirmar que {name} pagó el número {number}?</p>
+            <p>¿Estás seguro?</p>
             <button onClick={handleConfirmPayment}>Sí</button>
             <button onClick={handleCancel}>No</button>
         </div>
         )}
     </>
     )}
-    {isPaid && (
+    {isSelected && isPaid && (
     <button onClick={onDownloadTicket}>Descargar Ticket</button>
     )}
 </div>

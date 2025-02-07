@@ -5,19 +5,35 @@ import './form.css';
 
 const Form: React.FC = () => {
   const [name, setName] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [adminUsername, setAdminUsername] = useState<string>('');
   const [adminPassword, setAdminPassword] = useState<string>('');
   const navigate = useNavigate();
 
-  const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name.trim()) {
-      alert('Por favor, ingresa tu nombre.');
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    const phoneRegex = /^[0-9]+$/;
+
+    if (!name.trim() || !nameRegex.test(name)) {
+      alert('Por favor, ingresa un nombre válido (solo letras).');
       return;
     }
+
+    if (!phone.trim() || !phoneRegex.test(phone)) {
+      alert('Por favor, ingresa un número de teléfono válido (solo números).');
+      return;
+    }
+
+    const { error } = await supabase.from('users').insert({ name, phone });
+    if (error) {
+      alert('Error al guardar los datos. Intenta de nuevo.');
+      return;
+    }
+
     navigate('/numbers', { state: { name } });
-  }, [name, navigate]);
+  }, [name, phone, navigate]);
 
   const handleAdminLogin = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,13 +51,19 @@ const Form: React.FC = () => {
     navigate('/admin');
   }, [adminUsername, adminPassword, navigate]);
 
+  const toggleForm = () => {
+    setIsAdmin(!isAdmin);
+  };
+
   return (
     <div>
       <header className="header">
-        <button className="admin-button" onClick={() => setIsAdmin(true)}>Administrador</button>
+        <button className="toggle-button" onClick={toggleForm}>
+          {isAdmin ? 'Volver' : 'Administrador'}
+        </button>
       </header>
-      {!isAdmin ? (
-        <form onSubmit={handleSubmit}>
+      <div className="form-container">
+        <form onSubmit={handleSubmit} className={!isAdmin ? 'active' : ''}>
           <label htmlFor="name">Ingresa tu nombre:</label>
           <input
             type="text"
@@ -50,10 +72,17 @@ const Form: React.FC = () => {
             onChange={(e) => setName(e.target.value)}
             required
           />
+          <label htmlFor="phone">Ingresa tu número de teléfono:</label>
+          <input
+            type="text"
+            id="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
           <button type="submit">Aceptar</button>
         </form>
-      ) : (
-        <form onSubmit={handleAdminLogin}>
+        <form onSubmit={handleAdminLogin} className={isAdmin ? 'active' : ''}>
           <label htmlFor="adminUsername">Usuario:</label>
           <input
             type="text"
@@ -71,9 +100,8 @@ const Form: React.FC = () => {
             required
           />
           <button type="submit">Iniciar sesión</button>
-          <button type="button" onClick={() => setIsAdmin(false)}>Volver</button>
         </form>
-      )}
+      </div>
     </div>
   );
 };

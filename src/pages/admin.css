@@ -1,19 +1,24 @@
-.card {
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-border: 1px solid #ccc;
-border-radius: 5px;
-padding: 10px;
-text-align: center;
-}
-.tickets-container {
-    margin-top: 20px;
+
+.admin-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+}
+button {
+font-size: 0.7rem;
+}
+
+.tickets-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 20px;
+    max-width: 400px;
+    overflow-y: auto;
+    height: 100vh;
+}
 
 .not-selected {
 background-color: #fff;
@@ -55,7 +60,7 @@ margin: 5px;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     gap: 10px;
-    padding: 20px;
+    flex: 1;
 }
 
 @media (max-width: 1200px) {
@@ -71,9 +76,16 @@ margin: 5px;
 }
 
 @media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column; 
+    }
     .grid-container {
         grid-template-columns: repeat(4, 1fr);
     }
+    .tickets-container {
+        display: none;
+    }
+    
 }
 
 @media (max-width: 576px) {
