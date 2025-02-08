@@ -16,9 +16,11 @@
 
 .ticket h2 {
 margin-top: 0;
+color: black;
 }
 .ticket p {
     font-size: 1.5rem;
+    color: black;
     
 }
 .ticket-image {

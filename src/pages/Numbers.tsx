@@ -10,6 +10,7 @@ const Numbers: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { name } = location.state as { name: string };
+  const {phone} = location.state as {phone: string};
   const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
   const [isSelecting, setIsSelecting] = useState<number[]>([]);
   const [takenNumbers, setTakenNumbers] = useState<number[]>([]);
@@ -51,13 +52,41 @@ const Numbers: React.FC = () => {
   };
 
   const handleConfirmSelection = async () => {
-    const { error } = await supabase.from('users').insert({
-      name,
-      selectedNumbers: isSelecting,
-    });
-    if (error) {
-      alert('Error al guardar la selección. Intenta de nuevo.');
+    // Verifica si el usuario ya existe en la tabla
+    const { data: existingUser, error: fetchError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('name', name)
+      .single();
+  
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      alert('Error al verificar el usuario. Intenta de nuevo.');
       return;
+    }
+  
+    if (existingUser) {
+      // Si el usuario ya existe, actualiza los números seleccionados
+      const { error: updateError } = await supabase
+        .from('users')
+        .update({ selectedNumbers: isSelecting })
+        .eq('name', name);
+  
+      if (updateError) {
+        alert('Error al actualizar la selección. Intenta de nuevo.');
+        return;
+      }
+    } else {
+      // Si el usuario no existe, inserta un nuevo registro
+      const { error: insertError } = await supabase.from('users').insert({
+        name,
+        phone,
+        selectedNumbers: isSelecting,
+      });
+  
+      if (insertError) {
+        alert('Error al guardar la selección. Intenta de nuevo.');
+        return;
+      }
     }
     setSelectedNumbers(isSelecting);
     setIsSelecting([]);

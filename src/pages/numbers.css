@@ -25,20 +25,23 @@
 
 @media (max-width: 576px) {
     .grid-container {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media (max-width: 400px) {
     .grid-container {
-        grid-template-columns: 4, 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
+
+
 .confirm-buttom-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
+
 .confirm-buttom {
     background-color: #1c47a5;
     color: white;
@@ -47,7 +50,6 @@
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
-    
 }
 
 .confirm-buttom:hover {

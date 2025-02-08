@@ -83,7 +83,7 @@ const allPurchasesMap = new Map(purchases.map(purchase => [purchase.number, purc
 
 return (
 <div className="admin-container">
-    <div className="grid-container">
+    <div className="grid-admin-container">
     {allNumbers.map((number) => {
         const purchase = allPurchasesMap.get(number);
         return (

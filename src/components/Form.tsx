@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../services/supabaseClient';
+import Header from './Header/Header';
 import './form.css';
 
 const Form: React.FC = () => {
@@ -32,7 +33,7 @@ const Form: React.FC = () => {
       return;
     }
 
-    navigate('/numbers', { state: { name } });
+    navigate('/numbers', { state: { name, phone } });
   }, [name, phone, navigate]);
 
   const handleAdminLogin = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -57,11 +58,7 @@ const Form: React.FC = () => {
 
   return (
     <div>
-      <header className="header">
-        <button className="toggle-button" onClick={toggleForm}>
-          {isAdmin ? 'Volver' : 'Administrador'}
-        </button>
-      </header>
+      <Header isAdmin={isAdmin} toggleForm={toggleForm} />
       <div className="form-container">
         <form onSubmit={handleSubmit} className={!isAdmin ? 'active' : ''}>
           <label htmlFor="name">Ingresa tu nombre:</label>
