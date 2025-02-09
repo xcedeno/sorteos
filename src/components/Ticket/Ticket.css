@@ -5,7 +5,8 @@
     margin: 10px;
     background-color: #f9f9f9;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 365px;
+    max-width: 95%;
+    max-height: 95%;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -15,36 +16,38 @@
 }
 
 .ticket h2 {
-margin-top: 0;
+margin-top: -3px;
 color: black;
+font-size: 1.5rem;
 }
 .ticket p {
-    font-size: 1.5rem;
-    color: black;
-    
+font-size: 0.8rem;
+color: black;
+
 }
 .ticket-image {
-width: 70%;
+width: 50%;
 height: auto;
-margin-bottom: 5px;
+margin-bottom: 1px;
 }
 
 .numbers-container {
 display: grid;
 grid-template-columns: repeat(4, 1fr);
 gap: 10px;
-margin: 10px 0;
+margin: 5px 0;
+font-size: 1.2rem;
 }
 
 .number-box {
-    background-color: blue;
-    color: white;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 1.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+background-color: blue;
+color: white;
+border-radius: 5px;
+padding: 10px;
+font-size: 1.2rem;
+display: flex;
+justify-content: center;
+align-items: center;
 }
 
 .ticket button {
@@ -59,4 +62,67 @@ cursor: pointer;
 
 .ticket button:hover {
 background-color: #0e8a6a;
+}
+@media (max-width: 768px) {
+.ticket {
+    max-width: 90%;
+    max-height: 90%;
+    padding: 15px;
+    margin: 8px;
+}
+
+.ticket p {
+    font-size: 1.2rem;
+}
+
+.ticket-image {
+    width: 80%;
+}
+
+.numbers-container {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.number-box {
+    padding: 8px;
+    font-size: 1rem;
+}
+
+.ticket button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+}
+
+@media (max-width: 480px) {
+.ticket {
+    max-width: 90%;
+    max-height: 90%;
+    padding: 10px;
+    
+}
+
+.ticket p {
+    font-size: 0.5rem;
+}
+
+.ticket-image {
+    width: 90%;
+}
+
+.numbers-container {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+.number-box {
+    padding: 5px;
+    font-size: 0.8rem;
+}
+
+.ticket button {
+    padding: 6px 12px;
+    font-size: 0.5rem;
+}
 }

@@ -48,8 +48,17 @@ const downloadTicket = async () => {
 if (ticketRef.current === null) {
     return;
 }
+ // Hide the button before generating the image
+const button = ticketRef.current.querySelector('button');
+if (button) {
+button.style.display = 'none';
+}
 
 const dataUrl = await toPng(ticketRef.current, { width: 365, height: 667 });
+if (button) {
+    button.style.display = 'block';
+}
+
 const link = document.createElement('a');
 link.href = dataUrl;
 link.download = `ticket-${name}-${ticketNumber}.png`;

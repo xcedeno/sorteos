@@ -1,2 +1,68 @@
 
 
+.admin-card {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+    flex: 1 1 calc(10% - 10px); /* Ajuste flexible para que los cards se adapten al contenedor */
+    box-sizing: border-box; /* Incluye padding y border en el tamaño total del card */
+}
+
+
+.admin-card.selected {
+background-color: red;
+color: white;
+cursor: not-allowed;
+}
+
+
+.admin-card.selecting {
+background-color: yellow;
+color: black;
+cursor: pointer;
+}
+
+.admin-card.not-selected {
+background-color: rgb(12, 211, 12);
+color: black;
+cursor: pointer;
+}
+.admin-card.not-selected:hover {
+background-color: rgb(14, 139, 66);}
+
+@media (max-width: 1200px) {
+    .admin-card {
+        flex: 1 1 calc(12.5% - 10px); /* Ajuste para pantallas medianas */
+    }
+}
+
+@media (max-width: 992px) {
+    .admin-card {
+        flex: 1 1 calc(16.66% - 10px); /* Ajuste para pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-card {
+        flex: 1 1 calc(25% - 10px); /* Ajuste para pantallas aún más pequeñas */
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-card {
+        flex: 1 1 calc(33.33% - 10px); /* Ajuste para pantallas muy pequeñas */
+    }
+}
+
+@media (max-width: 400px) {
+    .admin-card {
+        flex: 1 1 calc(50% - 10px); /* Ajuste para pantallas móviles */
+    }
+}
+@media (max-width: 320px) {
+    .admin-card {
+        flex: 1 1 calc(100% - 10px); /* Ajuste para pantallas muy pequeñas como iPhone SE */
+    }
+}

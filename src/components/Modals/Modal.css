@@ -31,7 +31,6 @@ cursor: pointer;
 }
 @media (max-width: 768px) {
 .modal-content {
-    max-width: 90%;
     padding: 15px;
 }
 
@@ -42,7 +41,8 @@ cursor: pointer;
 
 @media (max-width: 480px) {
 .modal-content {
-    
+    max-width: 75%;
+    max-height: 75%;
     padding: 10px;
 }
 
@@ -50,3 +50,25 @@ cursor: pointer;
     font-size: 1rem;
 }
 }
+@media (max-width: 480px) {
+.modal-content {
+    max-width: 75%;
+    max-height: 75%;
+    padding: 10px;
+}
+
+.modal-close {
+    font-size: 1rem;
+}
+}
+@media (max-width: 320px) {
+    .modal-content {
+        max-width: 75%;
+        max-height: 75%;
+        padding: 10px;
+    }
+    
+    .modal-close {
+        font-size: 1rem;
+    }
+    }

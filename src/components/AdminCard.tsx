@@ -28,7 +28,7 @@ setShowConfirm(false);
 };
 
 return (
-<div className={`card ${isSelected ? (isPaid ? 'paid' : 'not-paid') : 'not-selected'}`} onClick={isPaid ? onShowTicket : undefined}>
+<div className={`admin-card ${isSelected ? (isPaid ? 'paid' : 'not-paid') : 'not-selected'}`} onClick={isPaid ? onShowTicket : undefined}>
     <p>{number}</p>
     <p>{name}</p>
     {isSelected && !isPaid && (
