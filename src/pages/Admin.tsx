@@ -5,6 +5,7 @@ import Ticket from '../components/Ticket/Ticket';
 import Modal from '../components/Modals/Modal';
 import './admin.css';
 import { toPng } from 'html-to-image';
+import Navbar from '../components/Navbar/Navbar';
 
 const Admin: React.FC = () => {
 const [purchases, setPurchases] = useState<{ number: number, name: string, isPaid: boolean }[]>([]);
@@ -83,6 +84,7 @@ const allPurchasesMap = new Map(purchases.map(purchase => [purchase.number, purc
 
 return (
 <div className="admin-container">
+    <Navbar />
     <div className="grid-admin-container">
     {allNumbers.map((number) => {
         const purchase = allPurchasesMap.get(number);
