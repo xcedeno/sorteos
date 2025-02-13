@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Wheel } from "react-custom-roulette";
 import { supabase } from "../../services/supabaseClient";
 import "./Roulette.css";
+import Navbar from "../Navbar/Navbar";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
 
 interface PaidNumber {
 number: number;
@@ -14,6 +17,7 @@ const [paidNumbers, setPaidNumbers] = useState<PaidNumber[]>([]);
 const [isSpinning, setIsSpinning] = useState(false);
 const [prizeIndex, setPrizeIndex] = useState<number | null>(null);
 const [showModal, setShowModal] = useState(false);
+const { width, height } = useWindowSize();
 
 // Función para cargar los números confirmados desde Supabase
 const fetchPaidNumbers = async () => {
@@ -70,18 +74,7 @@ setTimeout(() => {
 };
 
 // Datos para la ruleta
-const colors = [
-"#FF5733",
-"#33FF57",
-"#3357FF",
-"#FF33A1",
-"#F3FF33",
-"#33FFF9",
-"#FF5B33",
-"#B0FF33",
-"#B333FF",
-"#33FFC7",
-];
+const colors = ["#00008B", "#000000", "#FF0000"]; // Azul oscuro, negro y rojo
 
 const data = paidNumbers.map((number, index) => ({
 option: `Número: ${number.number}`,
@@ -93,6 +86,7 @@ fontSize: 16,
 if (paidNumbers.length === 0) {
 return (
     <div className="roulette-container">
+    <Navbar />
     <p>No hay números con ticket disponibles para sortear.</p>
     </div>
 );
@@ -100,6 +94,7 @@ return (
 
 return (
 <div className="roulette-container">
+    <Navbar />
     {/* Ruleta */}
     <div className="wheel-container">
     <Wheel
@@ -128,9 +123,13 @@ return (
 
     {/* Modal de Resultado */}
     {showModal && (
-    <div className="modal-overlay">
+    <div className={`modal-overlay ${showModal ? 'show' : ''}`}>
         <div className="modal-content">
         <h2>¡Felicidades!</h2>
+        <p>
+            Nombre del Ganador:{" "}
+            <strong>{prizeIndex !== null ? paidNumbers[prizeIndex].name : ""}</strong>
+        </p>
         <p>
             Ganaste el número:{" "}
             <strong>{prizeIndex !== null ? paidNumbers[prizeIndex].number : ""}</strong>
@@ -139,16 +138,15 @@ return (
             Número de Ticket:{" "}
             <strong>{prizeIndex !== null ? paidNumbers[prizeIndex].ticketNumber : ""}</strong>
         </p>
-        <p>
-            Nombre del Ganador:{" "}
-            <strong>{prizeIndex !== null ? paidNumbers[prizeIndex].name : ""}</strong>
-        </p>
         <button className="close-button" onClick={() => setShowModal(false)}>
             Cerrar
         </button>
         </div>
     </div>
     )}
+
+    {/* Efecto de Confeti */}
+    {showModal && <Confetti width={width} height={height} />}
 </div>
 );
 };

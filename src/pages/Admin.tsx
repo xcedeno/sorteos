@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../services/supabaseClient';
 import AdminCard from '../components/AdminCard';
 import Ticket from '../components/Ticket/Ticket';
 import Modal from '../components/Modals/Modal';
+import ConfirmModal from '../components/Modals/ConfirmModal';
 import './admin.css';
 import { toPng } from 'html-to-image';
 import Navbar from '../components/Navbar/Navbar';
@@ -11,7 +13,9 @@ const Admin: React.FC = () => {
 const [purchases, setPurchases] = useState<{ number: number, name: string, isPaid: boolean }[]>([]);
 const [paidUsers, setPaidUsers] = useState<{ name: string, numbers: number[] }[]>([]);
 const [selectedUser, setSelectedUser] = useState<{ name: string, numbers: number[] } | null>(null);
+const [showConfirmModal, setShowConfirmModal] = useState(false);
 const ticketRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+const navigate = useNavigate();
 
 useEffect(() => {
 const fetchPurchases = async () => {
@@ -34,6 +38,36 @@ const fetchPurchases = async () => {
 };
 fetchPurchases();
 }, []);
+
+useEffect(() => {
+const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    event.preventDefault();
+    event.returnValue = '';
+};
+
+const handlePopState = (event: PopStateEvent) => {
+    event.preventDefault();
+    setShowConfirmModal(true);
+};
+
+window.addEventListener('beforeunload', handleBeforeUnload);
+window.addEventListener('popstate', handlePopState);
+
+return () => {
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+    window.removeEventListener('popstate', handlePopState);
+};
+}, []);
+
+const handleConfirmExit = () => {
+setShowConfirmModal(false);
+navigate('/');
+};
+
+const handleCancelExit = () => {
+setShowConfirmModal(false);
+window.history.pushState(null, '', window.location.pathname);
+};
 
 const handleConfirmPayment = async (name: string) => {
 const updatedPurchases = purchases.map(purchase =>
@@ -109,6 +143,11 @@ return (
         </div>
     )}
     </Modal>
+    <ConfirmModal
+    isOpen={showConfirmModal}
+    onClose={handleCancelExit}
+    onConfirm={handleConfirmExit}
+    />
 </div>
 );
 };

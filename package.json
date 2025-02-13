@@ -10,14 +10,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@supabase/supabase-js": "^2.47.12",
     "canvas-confetti": "^1.9.3",
     "html-to-image": "^1.11.11",
     "react": "^18.3.1",
+    "react-confetti": "^6.2.2",
     "react-custom-roulette": "^1.4.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.1",
-    "react-toastify": "^11.0.2"
+    "react-toastify": "^11.0.2",
+    "react-use": "^17.6.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
